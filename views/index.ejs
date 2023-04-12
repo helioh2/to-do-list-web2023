@@ -1,27 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
     <title>Document</title>
-</head>
-<body>
-        <h1>LISTA DE TAREFAS</h1>
+  </head>
+  <body>
+    <header>
+      <h1>LISTA DE TAREFAS</h1>
+
+      <% if (!tarefaSelecionada) { %>
 
         <form action="/criarTarefa" method="post">
-            <input type="text" name="texto" id="tarefa" placeholder="Insira uma tarefa">
+            <input
+            type="text"
+            name="texto"
+            id="tarefa"
+            placeholder="Insira uma tarefa"
+            />
             <button id="addButton" type="submit">Criar Tarefa</button>
         </form>
 
-        
-        <ul>
-            <% listaTarefas.forEach((tarefa) => {  %>
-                <li><%= tarefa.texto %> | <%= tarefa.data.toLocaleDateString('pt-BR') %></li>
-            <% })  %>   
-        </ul> 
-        
+      <% } else { %>
+        <form action="/editarTarefa" method="post">
+            <input
+            type="text"
+            name="texto"
+            id="tarefa"
+            value="<%= tarefaSelecionada.texto %>"
+            />
+            <input
+            type="text"
+            name="_id"
+            id="_id"
+            hidden="true"
+            value="<%= tarefaSelecionada.id %>"
+            />
+            <button id="addButton" type="submit">Atualizar Tarefa</button>
+        </form>
+      <% } %>
+    </header>
 
-</body>
+    <section id="tarefas">
+      <ul>
+        <% listaTarefas.forEach(tarefa => { %>
+        <li>
+          <%= tarefa.texto %> | <%= tarefa.data.toLocaleDateString('pt-BR') %>
+          <a href="/editarTarefaForm?id=<%= tarefa.id %>">Editar</a>
+          <a href="/apagarTarefa?id=<%= tarefa.id %>">Apagar</a>
+        </li>
+        <% }) %>
+      </ul>
+    </section>
+  </body>
 </html>
