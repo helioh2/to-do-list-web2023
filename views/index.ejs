@@ -8,6 +8,20 @@
     <title>Document</title>
 </head>
 <body>
-        <h1>OLA MUNDO</h1>
+        <h1>LISTA DE TAREFAS</h1>
+
+        <form action="/criarTarefa" method="post">
+            <input type="text" name="texto" id="tarefa" placeholder="Insira uma tarefa">
+            <button id="addButton" type="submit">Criar Tarefa</button>
+        </form>
+
+        
+        <ul>
+            <% listaTarefas.forEach((tarefa) => {  %>
+                <li><%= tarefa.texto %> | <%= tarefa.data.toLocaleDateString('pt-BR') %></li>
+            <% })  %>   
+        </ul> 
+        
+
 </body>
 </html>
