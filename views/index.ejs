@@ -5,42 +5,58 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
-    <title>Document</title>
+    <title>Lista de Tarefas</title>
   </head>
   <body>
+    <nav class="nav-superior">
+      <% if (!usuarioLogado) { %>
+      <a href="/signupForm">Cadastro</a> |
+      <a href="/loginForm">Login</a>
+      <% } else { %>
+      Olá <%= usuarioLogado.username %> |
+      <a href="/logout">Logout</a>
+      <% } %>
+    </nav>
+
     <header>
       <h1>LISTA DE TAREFAS</h1>
 
-      <% if (!tarefaSelecionada) { %>
+      <% if (!usuarioLogado) { %>
+      <p>
+        Por fazer, faça o <a href="/loginForm">login</a> ou
+        <a href="/logout">cadastre-se</a>
+      </p>
+      <% } else { %> 
+        <% if (typeof tarefaSelecionada != "undefined") { %>
 
-        <form action="/criarTarefa" method="post">
-            <input
-            type="text"
-            name="texto"
-            id="tarefa"
-            placeholder="Insira uma tarefa"
-            />
-            <button id="addButton" type="submit">Criar Tarefa</button>
-        </form>
+      <form action="/criarTarefa" method="post">
+        <input
+          type="text"
+          name="texto"
+          id="tarefa"
+          placeholder="Insira uma tarefa"
+        />
+        <button id="addButton" type="submit">Criar Tarefa</button>
+      </form>
 
       <% } else { %>
-        <form action="/editarTarefa" method="post">
-            <input
-            type="text"
-            name="texto"
-            id="tarefa"
-            value="<%= tarefaSelecionada.texto %>"
-            />
-            <input
-            type="text"
-            name="_id"
-            id="_id"
-            hidden="true"
-            value="<%= tarefaSelecionada.id %>"
-            />
-            <button id="addButton" type="submit">Atualizar Tarefa</button>
-        </form>
-      <% } %>
+      <form action="/editarTarefa" method="post">
+        <input
+          type="text"
+          name="texto"
+          id="tarefa"
+          value="<%= tarefaSelecionada.texto %>"
+        />
+        <input
+          type="text"
+          name="_id"
+          id="_id"
+          hidden="true"
+          value="<%= tarefaSelecionada.id %>"
+        />
+        <button id="addButton" type="submit">Atualizar Tarefa</button>
+      </form>
+      <% } %> 
     </header>
 
     <section id="tarefas">
@@ -54,5 +70,6 @@
         <% }) %>
       </ul>
     </section>
+    <% } %>
   </body>
 </html>

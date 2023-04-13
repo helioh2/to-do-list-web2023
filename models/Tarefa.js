@@ -13,6 +13,10 @@ const tarefaSchema = new mongoose.Schema({
     data: {
         type: Date,
         default: Date.now(),
+    },
+    idUsuario: {
+        type: String,
+        require: true,
     }
 });
 

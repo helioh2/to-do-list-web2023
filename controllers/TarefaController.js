@@ -1,9 +1,12 @@
 const TarefaService = require("../services/TarefaService")
 
 const getAllTarefas = async (req, res) => {
-
+    if (!req.session.usuarioLogado) {
+        return res.render("index", {listaTarefas: [], tarefaSelecionada: null});
+    }
+    const idUsuario = req.session.usuarioLogado._id
     try {
-        const listaTarefas = await TarefaService.getAllTarefas();
+        const listaTarefas = await TarefaService.getAllTarefasByIdUsuario(idUsuario);
         return res.render("index", {listaTarefas, tarefaSelecionada: null});
     } catch (err) {
         res.status(500).send({error: err.message})
@@ -23,6 +26,8 @@ const editarTarefaForm = async (req, res) => {
 
 const editarTarefa = async (req, res) => {
     const tarefa = req.body;
+    const idUsuario = req.session.usuarioLogado._id
+    tarefa.idUsuario = idUsuario
     try {
         await TarefaService.updateTarefa(tarefa);
         res.redirect("/");
@@ -31,23 +36,11 @@ const editarTarefa = async (req, res) => {
     }
 }
 
-const createTarefaDummy = async (req, res) => {
-    const tarefa = {
-        texto: "Lavar louça",
-        feito: false,
-    }
-
-    try {
-        await TarefaService.createTarefa(tarefa);
-        return res.redirect("/");
-    } catch (err) {
-        res.status(500).send({error: err.message})
-    }
-};
-
 
 const createTarefa = async (req, res) => {
     const tarefa = req.body; //traz os dados da requisição em formato JSON (ver express.urlencoded() em app.js)
+    const idUsuario = req.session.usuarioLogado._id
+    tarefa.idUsuario = idUsuario
 
     if (!tarefa.texto) {
         return res.redirect("/")
@@ -73,7 +66,6 @@ const apagarTarefa = async (req, res) => {
 
 module.exports = {
     getAllTarefas,
-    createTarefaDummy,
     createTarefa,
     editarTarefa,
     editarTarefaForm,

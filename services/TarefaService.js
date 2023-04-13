@@ -1,7 +1,7 @@
 const Tarefa = require("../models/Tarefa")
 
-const getAllTarefas = async () => {
-    return await Tarefa.find();
+const getAllTarefasByIdUsuario = async (idUsuario) => {
+    return await Tarefa.find({idUsuario: idUsuario});
 }
 
 const getTarefaById = async (id) => {
@@ -23,7 +23,7 @@ const deleteTarefaById = async (id) => {
 
 module.exports = {
     getTarefaById,
-    getAllTarefas,
+    getAllTarefasByIdUsuario,
     createTarefa,
     updateTarefa,
     deleteTarefaById
