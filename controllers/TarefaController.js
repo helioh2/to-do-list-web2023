@@ -17,7 +17,7 @@ const editarTarefaForm = async (req, res) => {
     const id = req.query.id;
     try {
         const tarefaSelecionada = await TarefaService.getTarefaById(id);
-        const listaTarefas = await TarefaService.getAllTarefas();
+        const listaTarefas = await TarefaService.getAllTarefasByIdUsuario(tarefaSelecionada.idUsuario);
         return res.render("index", {listaTarefas, tarefaSelecionada});
     } catch (err) {
         res.status(500).send({error: err.message})
@@ -26,8 +26,7 @@ const editarTarefaForm = async (req, res) => {
 
 const editarTarefa = async (req, res) => {
     const tarefa = req.body;
-    const idUsuario = req.session.usuarioLogado._id
-    tarefa.idUsuario = idUsuario
+    console.log(tarefa)
     try {
         await TarefaService.updateTarefa(tarefa);
         res.redirect("/");
@@ -64,10 +63,21 @@ const apagarTarefa = async (req, res) => {
     }
 }
 
+const marcarComoFeita = async (req, res) => {
+    const id = req.params.id
+    try {
+        await TarefaService.marcarComoFeita(id);
+        res.redirect("/");
+    } catch (err) {
+        res.status(500).send({ error: err.message });
+    }
+};
+
 module.exports = {
     getAllTarefas,
     createTarefa,
     editarTarefa,
     editarTarefaForm,
-    apagarTarefa
+    apagarTarefa,
+    marcarComoFeita
 }

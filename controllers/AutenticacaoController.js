@@ -9,10 +9,10 @@ const signupForm = (req, res) => {
   return res.render("signupForm");
 };
 
-const signup = (req, res) => {
+const signup = async (req, res) => {
   let usuario = req.body;
   try {
-    usuario = AutenticacaoService.createUsuario(usuario);
+    usuario = await AutenticacaoService.createUsuario(usuario);
   } catch (err) {
     res.status(500).send({error: err.message})
   } 

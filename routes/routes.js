@@ -8,6 +8,8 @@ routes.get("/editarTarefaForm", TarefaController.editarTarefaForm);
 routes.post("/editarTarefa", TarefaController.editarTarefa);
 routes.get("/apagarTarefa", TarefaController.apagarTarefa);
 
+routes.get("/check/:id", TarefaController.marcarComoFeita);
+
 routes.get("/loginForm", AutenticacaoController.loginForm);
 routes.get("/signupForm", AutenticacaoController.signupForm);
 routes.post("/signup", AutenticacaoController.signup);
