@@ -1,3 +1,4 @@
+const { StatusCodes } = require("http-status-codes");
 const TarefaService = require("../services/TarefaService")
 
 const getAllTarefas = async (req, res) => {
@@ -11,6 +12,21 @@ const getAllTarefas = async (req, res) => {
     } catch (err) {
         res.status(500).send({error: err.message})
     }
+}
+
+
+const getTarefaByTexto = async (req, res) => {
+
+    if (!req.session.usuarioLogado) {
+        return res.status(StatusCodes.UNAUTHORIZED).send({error: "Usuario não logado"})     
+    }
+
+    const texto = req.query.texto
+    const idUsuario = req.session.usuarioLogado._id
+
+    const tarefas = await TarefaService.getTarefaByTexto(texto, idUsuario);
+    
+    res.send(tarefas)
 }
 
 const editarTarefaForm = async (req, res) => {
@@ -73,11 +89,14 @@ const marcarComoFeita = async (req, res) => {
     }
 };
 
+
+
 module.exports = {
     getAllTarefas,
+    getTarefaByTexto,
     createTarefa,
     editarTarefa,
     editarTarefaForm,
     apagarTarefa,
-    marcarComoFeita
+    marcarComoFeita,
 }

@@ -3,6 +3,7 @@ const TarefaController = require("../controllers/TarefaController");
 const AutenticacaoController = require("../controllers/AutenticacaoController");
 
 routes.get("/", TarefaController.getAllTarefas);
+routes.get("/buscarTarefa", TarefaController.getTarefaByTexto);
 routes.post("/criarTarefa", TarefaController.createTarefa);
 routes.get("/editarTarefaForm", TarefaController.editarTarefaForm);
 routes.post("/editarTarefa", TarefaController.editarTarefa);

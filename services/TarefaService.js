@@ -1,7 +1,16 @@
 const Tarefa = require("../models/Tarefa")
 
 const getAllTarefasByIdUsuario = async (idUsuario) => {
-    return await Tarefa.find({idUsuario: idUsuario});
+    return await Tarefa.find();
+}
+
+const getTarefaByTexto = async (texto, idUsuario) => {
+    return await Tarefa.find(
+        {
+            idUsuario: idUsuario,
+            texto: { $regex: texto },
+        }
+    )
 }
 
 const getTarefaById = async (id) => {
@@ -24,12 +33,16 @@ const deleteTarefaById = async (id) => {
 const marcarComoFeita = async (id) => {
     const tarefa = await Tarefa.findOne({ _id: id });
     tarefa.feito = tarefa.feito || true; // se estiver false, passa pra true, se estiver true continua true 
+    // if (!tarefa.feito) {
+    //     tarefa.feito = true;
+    // }
     await Tarefa.updateOne({ _id: id }, tarefa);
 }
 
 module.exports = {
     getTarefaById,
     getAllTarefasByIdUsuario,
+    getTarefaByTexto,
     createTarefa,
     updateTarefa,
     deleteTarefaById,

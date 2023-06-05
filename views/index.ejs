@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
     <link rel="stylesheet" href="css/style.css">
 
+    
     <title>Lista de Tarefas</title>
   </head>
   <body>
@@ -40,6 +41,11 @@
         </div>
       </div>
     </nav>
+
+    <form>
+      <input type="search" id="busca" name="busca"  placeholder="pesquisa tarefa">
+    </form>
+    <div class="resultado_ajax"></div>
 
     <header class="p-5 text-bg-secondary bg-gradient rounded text-center">
       <h1>LISTA DE TAREFAS</h1>
@@ -99,7 +105,7 @@
              <a href="/check/<%= tarefa._id %>" class="texto-tarefa check-<%= tarefa.feito %>"> <%= tarefa.texto %></a> 
             </span>
             <span id="criado-em">Criado em <%= tarefa.data.toLocaleDateString('pt-BR') %></span> 
-          </td class="coluna-botoes">
+          </td>
           <td class="coluna-botoes">
             <a class="btn btn-success" href="/editarTarefaForm?id=<%= tarefa.id %>"><i class="bi bi-pencil-square"></i></a>
             <a class="btn btn-danger" href="/apagarTarefa?id=<%= tarefa.id %>"><i class="bi bi-trash"></i></a>
@@ -113,4 +119,30 @@
 
     <% } %>
   </body>
+
+
+  <script>
+    //JAVASCRIPT NO LADO DO CLIENTE (IRÁ EXECUTAR NO BROWSER)
+    input = document.querySelector("#busca");
+    dropdownMenu = document.querySelector(".resultado_ajax")
+
+    input.addEventListener("keyup", async (ev) => {
+
+      console.log(input.value)
+      const res = await fetch(`/buscarTarefa?texto=${input.value}`);
+      const json = await res.json();
+      console.log(json)
+
+      let conteudo = ""
+      json.forEach(tarefa => {
+        conteudo += `<p>${tarefa.texto}</p> `
+      })
+
+      console.log(conteudo)
+
+      dropdownMenu.innerHTML = conteudo;
+
+    })
+
+  </script>
 </html>
